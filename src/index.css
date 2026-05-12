@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --gdl-orange: #f97316;
+    --gdl-orange-dim: #ea580c;
+    --gdl-bg: #0c0a09;
+    --gdl-surface: #1c1917;
+    --gdl-surface2: #292524;
+    --gdl-border: rgba(255,255,255,0.07);
+    --gdl-text: #fafaf9;
+    --gdl-muted: #a8a29e;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--gdl-bg);
+    color: var(--gdl-text);
+    font-family: 'DM Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: var(--gdl-surface); }
+  ::-webkit-scrollbar-thumb { background: #44403c; border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: #57534e; }
+
+  /* Selection */
+  ::selection { background: rgba(249,115,22,0.3); color: #fff; }
+}
+
+@layer components {
+  .gdl-card {
+    @apply rounded-2xl border bg-night-800 transition-all duration-200;
+    border-color: var(--gdl-border);
+  }
+
+  .gdl-card-hover {
+    @apply gdl-card hover:border-orange-500/30 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-orange-900/20;
+  }
+
+  .gdl-btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-orange-500 px-5 py-2.5 text-sm font-semibold text-white transition-all duration-150 hover:bg-orange-400 active:scale-95 disabled:opacity-50 disabled:pointer-events-none;
+    font-family: 'Syne', sans-serif;
+  }
+
+  .gdl-btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-medium text-stone-300 transition-all duration-150 hover:bg-white/5 hover:text-white active:scale-95;
+  }
+
+  .gdl-btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border px-4 py-2 text-sm font-medium transition-all duration-150 hover:bg-white/5 active:scale-95;
+    border-color: var(--gdl-border);
+  }
+
+  .gdl-input {
+    @apply w-full rounded-xl border bg-night-700 px-4 py-2.5 text-sm text-stone-100 placeholder-stone-500 outline-none transition-all duration-150 focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/30;
+    border-color: var(--gdl-border);
+  }
+
+  .gdl-label {
+    @apply block text-xs font-medium uppercase tracking-wider text-stone-400 mb-1.5;
+    font-family: 'Syne', sans-serif;
+  }
+
+  .gdl-badge {
+    @apply inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-medium;
+  }
+
+  .gdl-section-title {
+    @apply text-2xl font-bold tracking-tight;
+    font-family: 'Syne', sans-serif;
+  }
+}
+
+/* Grain overlay */
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+  z-index: 9999;
+  opacity: 0.35;
+}
+
+/* Staggered animations */
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.1s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.2s; }
+.stagger-5 { animation-delay: 0.25s; }
