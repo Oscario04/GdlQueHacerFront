@@ -117,6 +117,32 @@ export const adminApi = {
     api
       .post<{ job_id: string; message: string }>('/api/admin/trigger-retrain')
       .then((r) => r.data),
+
+  exportEventsCsv: async () => {
+    const token = localStorage.getItem('gdl_token') ?? ''
+    const baseUrl = import.meta.env.VITE_API_URL ?? ''
+    const url = `${baseUrl}/api/admin/export/events-csv`
+
+    const res = await fetch(url, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+
+    if (!res.ok) {
+      throw new Error(`Error al exportar CSV: ${res.status}`)
+    }
+
+    const blob = await res.blob()
+    const objectUrl = URL.createObjectURL(blob)
+    const date = new Date().toISOString().slice(0, 10)
+
+    const link = document.createElement('a')
+    link.href = objectUrl
+    link.download = `eventos_gdl_${date}.csv`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(objectUrl)
+  },
 }
 
 // ── Health ────────────────────────────────────────────────────────────

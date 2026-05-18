@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   BarChart2, Users, Eye, CheckCircle2, XCircle,
-  Plus, Loader2, RefreshCw, ShieldCheck, Zap, Brain,
+  Plus, Loader2, RefreshCw, ShieldCheck, Zap, Brain, Download,
 } from 'lucide-react'
 import { adminApi } from '@/services/api'
 import type { AdminStats, ReviewItem, EventCategory } from '@/types'
@@ -83,6 +83,9 @@ function StatsTab() {
   const [retrainJobId, setRetrainJobId] = useState<string | null>(null)
   const [retrainRunning, setRetrainRunning] = useState(false)
 
+  // CSV export
+  const [exportLoading, setExportLoading] = useState(false)
+
   useEffect(() => {
     adminApi.stats().then(setStats).finally(() => setLoading(false))
   }, [])
@@ -106,6 +109,17 @@ function StatsTab() {
       setRetrainJobId(res.job_id)
     } catch {
       setRetrainRunning(false)
+    }
+  }
+
+  const handleExportCsv = async () => {
+    setExportLoading(true)
+    try {
+      await adminApi.exportEventsCsv()
+    } catch {
+      // silent
+    } finally {
+      setExportLoading(false)
     }
   }
 
@@ -194,6 +208,16 @@ function StatsTab() {
                 ? <Loader2 size={14} className="animate-spin" />
                 : <Brain size={14} className="text-orange-400" />}
               {retrainRunning ? 'Reentrenando...' : 'Reentrenar modelos ML'}
+            </button>
+
+            <button
+              onClick={handleExportCsv}
+              disabled={exportLoading}
+              className="gdl-btn-outline w-full gap-2">
+              {exportLoading
+                ? <Loader2 size={14} className="animate-spin" />
+                : <Download size={14} className="text-orange-400" />}
+              {exportLoading ? 'Exportando...' : 'Descargar CSV de eventos'}
             </button>
           </div>
         </div>
